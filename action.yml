@@ -1,22 +1,22 @@
-name: "Setup Cicada"
-description: "Install Cicada with specific versions in your CI"
-author: "Shopware AG & cicada AG"
+name: "Setup XChanMing"
+description: "Install XChanMing with specific versions in your CI"
+author: "Shopware AG"
 branding:
   color: "blue"
   icon: "download"
 inputs:
   env:
-    description: "Environment for Cicada"
+    description: "Environment for XChanMing"
     required: true
     default: "test"
-  cicada-version:
-    description: "Cicada Version to use"
+  xchanming-version:
+    description: "XChanMing Version to use"
     required: true
     default: "v6.6.6.0"
-  cicada-repository:
-    description: The cicada repository to checkout
+  xchanming-repository:
+    description: The xchanming repository to checkout
     required: true
-    default: xchanming/cicada
+    default: xchanming/xchanming
   php-version:
     description: "PHP Version to use"
     required: true
@@ -30,7 +30,7 @@ inputs:
     required: false
     default: ".auto"
   install:
-    description: "Install Cicada"
+    description: "Install XChanMing"
     required: true
     default: "false"
   install-locale:
@@ -42,7 +42,7 @@ inputs:
     required: true
     default: "EUR"
   keep-composer-tools:
-    description: "Keep Cicada Composer tools (PHPStan, ECS, BC-Checker)"
+    description: "Keep XChanMing Composer tools (PHPStan, ECS, BC-Checker)"
     required: true
     default: "false"
   mysql-version:
@@ -66,18 +66,18 @@ inputs:
     required: false
     default: ""
   path:
-    description: Relative path under $GITHUB_WORKSPACE to place the cicada repository
+    description: Relative path under $GITHUB_WORKSPACE to place the xchanming repository
     required: true
     default: ""
 
 runs:
   using: "composite"
   steps:
-    - name: Clone Cicada
+    - name: Clone XChanMing
       uses: actions/checkout@v4
       with:
-        repository: ${{ inputs.cicada-repository }}
-        ref: ${{ inputs.cicada-version }}
+        repository: ${{ inputs.xchanming-repository }}
+        ref: ${{ inputs.xchanming-version }}
         path: ${{ inputs.path }}
 
     - name: Set COMPOSER_ROOT_VERSION
@@ -142,7 +142,7 @@ runs:
 
     - uses: "ramsey/composer-install@v3"
       with:
-        custom-cache-key: ${{ runner.os }}-setup-cicada-composer-${{ inputs.php-version }}-${{ hashFiles('composer.json', 'custom/plugins/**/composer.json') }}
+        custom-cache-key: ${{ runner.os }}-setup-xchanming-composer-${{ inputs.php-version }}-${{ hashFiles('composer.json', 'custom/plugins/**/composer.json') }}
         working-directory: ${{ inputs.path }}
 
     - uses: actions/setup-node@v4
@@ -202,11 +202,11 @@ runs:
         composer run framework:schema:dump
         composer run npm:admin run convert-entity-schema
 
-    - name: Setup Cicada Database URL
+    - name: Setup XChanMing Database URL
       shell: bash
       working-directory: ${{ inputs.path }}
       run: |
-        echo "DATABASE_URL=mysql://root@127.0.0.1/cicada" >> "$GITHUB_ENV"
+        echo "DATABASE_URL=mysql://root@127.0.0.1/xchanming" >> "$GITHUB_ENV"
       if: ${{ env.DATABASE_URL == '' }} # Don't override if already set
 
     - name: Configure MySQL Client
@@ -252,7 +252,7 @@ runs:
           done
         fi
 
-    - name: Setup Cicada Environment Variables
+    - name: Setup XChanMing Environment Variables
       shell: bash
       working-directory: ${{ inputs.path }}
       run: |
@@ -260,7 +260,7 @@ runs:
         echo "APP_SECRET=def00000bb5acb32b54ff8ee130270586eec0e878f7337dc7a837acc31d3ff00f93a56b595448b4b29664847dd51991b3314ff65aeeeb761a133b0ec0e070433bff08e48" >> "$GITHUB_ENV"
         echo "APP_URL=http://localhost:8000" >> "$GITHUB_ENV"
 
-    - name: Install Cicada
+    - name: Install XChanMing
       if: inputs.install == 'true'
       shell: bash
       working-directory: ${{ inputs.path }}
