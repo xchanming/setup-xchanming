@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Setup Cicada
+      - name: Setup XChanMing
         uses: ./.
         with:
           mysql-version: ${{ matrix.mysql }}
@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Setup Cicada
+      - name: Setup XChanMing
         uses: ./.
         with:
           install: 'true'
@@ -42,7 +42,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Setup Cicada
+      - name: Setup XChanMing
         uses: ./.
         with:
           install: 'true'
@@ -60,7 +60,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Setup Cicada
+      - name: Setup XChanMing
         uses: ./.
         with:
           cicada-version: '${{ matrix.version }}'
